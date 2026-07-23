@@ -1,6 +1,14 @@
-[deploy]
-volumeMount = "/data"
-startCommand = "cd /data/cbg && ttyd -p 7681 -W -c lo:GANTI_PASSWORD_KAMU bash"
-
 [build]
 builder = "dockerfile"
+dockerfilePath = "Dockerfile"
+
+[deploy]
+startCommand = ""
+healthcheckPath = "/"
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 5
+
+[[volumes]]
+mount = "/data"
+name = "cbg-data"
+size = 1
