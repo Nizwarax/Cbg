@@ -10,7 +10,7 @@ RUN apt update -y && apt install -y --no-install-recommends \
     aapt apksigner zipalign build-essential git procps \
     && rm -rf /var/lib/apt/lists/*
 
-# --- APKTOOL TERBARU (repo apt jadul!) ---
+# --- APKTOOL TERBARU ---
 RUN wget -q https://raw.githubusercontent.com/iBotPeaches/Apktool/master/scripts/linux/apktool -O /usr/local/bin/apktool \
     && wget -q https://bitbucket.org/iBotPeaches/apktool/downloads/apktool_2.9.3.jar -O /usr/local/bin/apktool.jar \
     && chmod +x /usr/local/bin/apktool /usr/local/bin/apktool.jar
@@ -34,18 +34,17 @@ RUN mkdir -p /root/.android \
        -keyalg RSA -keysize 2048 -validity 10000 \
        -dname "CN=Android Debug,O=Android,C=US" >/dev/null 2>&1
 
-# --- TTYD (WEB TERMINAL RAILWAY) ---
+# --- TTYD WEB TERMINAL ---
 RUN TTYD_URL=$(curl -sL https://api.github.com/repos/tsl0922/ttyd/releases/latest | grep -oP '"browser_download_url":\s*"\K[^"]+x86_64' | head -1) \
     && wget -q --tries=5 "$TTYD_URL" -O /usr/local/bin/ttyd \
     && chmod +x /usr/local/bin/ttyd
 
-# --- COPY SCRIPT UTAMA ---
+# --- SCRIPT UTAMA ---
 COPY cbg.sh /data/cbg/cbg.sh
 RUN chmod +x /data/cbg/cbg.sh \
     && ln -sf /data/cbg/cbg.sh /usr/local/bin/cbg
 
-VOLUME ["/data"]
 EXPOSE 7681
 
-# --- START WEB TERMINAL ---
+# --- START ---
 CMD ["ttyd","-p","7681","-W","-c","lo:sayangenicbg46","bash"]
