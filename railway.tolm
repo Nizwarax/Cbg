@@ -1,0 +1,6 @@
+[deploy]
+volumeMount = "/data"
+startCommand = "cd /data/cbg && ttyd -p 7681 -W -c lo:GANTI_PASSWORD_KAMU bash"
+
+[build]
+builder = "dockerfile"
