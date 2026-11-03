@@ -5,10 +5,15 @@ WORKDIR /data/cbg
 
 # SYSTEM
 RUN apt update -y && apt install -y --no-install-recommends \
-    wget curl unzip ca-certificates \
+    wget curl unzip ca-certificates passwd login \
     openjdk-17-jdk-headless python3 python3-pip \
     aapt apksigner zipalign build-essential git procps \
     && rm -rf /var/lib/apt/lists/*
+
+RUN groupadd --system cbg \
+    && useradd --system --gid cbg --home-dir /home/cbg --create-home --shell /usr/sbin/nologin cbg \
+    && mkdir -p /home/cbg/work \
+    && chown -R cbg:cbg /home/cbg
 
 # APKTOOL
 RUN wget -q https://raw.githubusercontent.com/iBotPeaches/Apktool/master/scripts/linux/apktool -O /usr/local/bin/apktool \
